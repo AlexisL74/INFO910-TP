@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-init-script
+data:
+  init.sql: |
+    CREATE USER depocheck_root WITH PASSWORD 'depocheck123;' CREATEDB;
+    CREATE DATABASE db_depocheck
+        WITH 
+        OWNER = depocheck_root
+        ENCODING = 'UTF8'
+        LC_COLLATE = 'en_US.utf8'
+        LC_CTYPE = 'en_US.utf8'
+        TABLESPACE = pg_default
+        CONNECTION LIMIT = -1;

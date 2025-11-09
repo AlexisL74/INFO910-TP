@@ -1,0 +1,6 @@
+[submodule "apps/web"]
+	path = apps/web
+	url = https://github.com/AlexisL74/dependabot-gr2-web-INFO910.git
+[submodule "apps/api"]
+	path = apps/api
+	url = https://github.com/AlexisL74/dependabot-gr2-api-INFO910.git

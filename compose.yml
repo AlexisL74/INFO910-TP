@@ -1,0 +1,55 @@
+services:
+  postgres:
+    image: postgres:15.2
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: depocheck
+      POSTGRES_PASSWORD: depocheck
+      POSTGRES_DB: db_depocheck
+    ports:
+      - "5432:5432"
+
+  depocheck-api:
+    image: ghcr.io/alexisl74/dependabot-gr2-api-info910:main
+    container_name: depocheck-api
+    restart: always
+    ports:
+      - "8080:3000"
+    environment:
+      - VIRTUAL_HOST=http://localhost:8080
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/db_depocheck
+      - SPRING_DATASOURCE_USERNAME=depocheck
+      - SPRING_DATASOURCE_PASSWORD=depocheck
+      - VIRTUAL_PORT=3000
+      - FRONTEND_URL=http://localhost:8081
+      - JWT_SECRET=thisIsMysecregtfrdesww233eggtffeeddgkjjhhtdhttebd54ndhdhfhhhshs8877465sbbdd
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    depends_on:
+      - postgres
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 30s
+        max_attempts: 3
+        window: 120s
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 500M
+        reservations:
+          cpus: '0.25'
+          memory: 350M
+  
+  depocheck-web:
+    image: ghcr.io/alexisl74/dependabot-gr2-web-info910:main
+    container_name: depocheck-web
+    restart: always
+    environment:
+      - VIRTUAL_HOST=http://localhost:8081
+      - PORT=8080
+      - API_URL=http://localhost:8080
+    ports:
+      - "8081:8080"
+    depends_on:
+      - depocheck-api

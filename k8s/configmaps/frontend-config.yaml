@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-config
+data:
+  VIRTUAL_HOST: http://localhost:8081
+  PORT: "8080"
+  API_URL: http://localhost:8080

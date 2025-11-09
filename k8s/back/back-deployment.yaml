@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      initContainers:
+      - name: wait-for-postgres
+        image: postgres:15-alpine
+        env:
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: POSTGRES_PASSWORD
+        command: 
+        - sh
+        - -c
+        - |
+          echo "Waiting for PostgreSQL to be ready..."
+          until pg_isready -h postgres-service -p 5432 -U depocheck; do
+            echo "PostgreSQL not ready, retrying in 5 seconds..."
+            sleep 5
+          done
+          echo "PostgreSQL is ready!"
+          
+          echo "Testing database connection..."
+          psql -h postgres-service -U depocheck -d db_depocheck -c "SELECT version();"
+          echo "Database connection successful!"
+      containers:
+      - name: backend
+        image: ghcr.io/alexisl74/dependabot-gr2-api-info910:main
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000
+        env:
+        - name: SPRING_DATASOURCE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: backend-secret
+              key: SPRING_DATASOURCE_PASSWORD
+        envFrom:
+        - configMapRef:
+            name: backend-config
