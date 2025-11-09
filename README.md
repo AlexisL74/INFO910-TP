@@ -88,11 +88,11 @@ INFO910/
 
 2. Se connecter avec le compte créé.
 
-![[images/DepocheckLogin.png]]
+![Login](images/DepocheckLogin.png)
 
 3. Créer un repository sur el dashboard
 
-![[images/DepocheckDashBoard.png]]
+![Dashboard](images/DepocheckDashBoard.png)
 
 4. Ajouter un repository via le formulaire :
    - Nom utilisateur GitHub
@@ -100,7 +100,7 @@ INFO910/
    - Token GitHub (pour accéder aux repositories privés)
 
 Pour ajouter un repository, il faut remplire le formulaire qui s'affiche avec des informations tel que  sont nom utilisateru github, le lien vers le repository ainsi qu'un token github pour s'authentifier et avoir accès à des repository privés.
-![[images/DepocheckCreateRepo.png]]
+![Create Repo](images/DepocheckCreateRepo.png)
 
 5. Sur la page du repository, le système scanne les dépendances et affiche l'état.
-![[images/DepocheckRepoView.png]]
+![Repo Veiw](images/DepocheckRepoView.png)
